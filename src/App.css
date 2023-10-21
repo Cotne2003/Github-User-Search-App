@@ -1,0 +1,20 @@
+.light-dark-mode:hover .light {
+  color: #3c74e2;
+}
+
+.light-dark-mode:hover .dark {
+  color: rgb(175, 154, 97);
+}
+
+.light-dark-mode:hover .light-img {
+  filter: invert(100%) sepia(10%) saturate(1148%) hue-rotate(182deg)
+    brightness(94%) contrast(96%);
+}
+
+.light-dark-mode:hover .dark-img {
+  filter: invert(14%) sepia(10%) saturate(1148%) hue-rotate(0deg)
+    brightness(94%) contrast(96%);
+}
+/* div {
+  background-color: #ff0000;
+} */

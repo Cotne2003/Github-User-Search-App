@@ -6,56 +6,65 @@ import location from "/icon-location.svg";
 import website from "/icon-website.svg";
 import twitter from "/icon-twitter.svg";
 import company from "/icon-company.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface DATA {
+  avatar_url: string;
+  bio: null;
+  blog: string;
+  company: string;
+  created_at: string;
+  email: null;
+  events_url: string;
+  followers: number;
+  followers_url: string;
+  following: number;
+  following_url: string;
+  gists_url: string;
+  gravatar_id: string;
+  hireable: null;
+  html_url: string;
+  id: number;
+  location: string;
+  login: string;
+  name: string;
+  node_id: string;
+  organizations_url: string;
+  public_gists: number;
+  public_repos: number;
+  received_events_url: string;
+  repos_url: string;
+  site_admin: boolean;
+  starred_url: string;
+  subscriptions_url: string;
+  twitter_username: null;
+  type: string;
+  updated_at: string;
+  url: string;
+}
+
 function App() {
+  useEffect(() => {
+    getUser("octocat");
+  }, []);
+
   const [light, setLight] = useState(true);
   document.body.style.backgroundColor = light ? "#F6F8FF" : "#141d2f";
   const [userName, setUserName] = useState<null | string>(null);
-  const [userData, setUserData] = useState({
-    avatar_url: "https://avatars.githubusercontent.com/u/583231?v=4",
-    bio: null,
-    blog: "https://github.blog",
-    company: "@github",
-    created_at: "2011-01-25T18:44:36Z",
-    email: null,
-    events_url: "https://api.github.com/users/octocat/events{/privacy}",
-    followers: 10767,
-    followers_url: "https://api.github.com/users/octocat/followers",
-    following: 9,
-    following_url:
-      "https://api.github.com/users/octocat/following{/other_user}",
-    gists_url: "https://api.github.com/users/octocat/gists{/gist_id}",
-    gravatar_id: "",
-    hireable: null,
-    html_url: "https://github.com/octocat",
-    id: 583231,
-    location: "San Francisco",
-    login: "octocat",
-    name: "The Octocat",
-    node_id: "MDQ6VXNlcjU4MzIzMQ==",
-    organizations_url: "https://api.github.com/users/octocat/orgs",
-    public_gists: 8,
-    public_repos: 8,
-    received_events_url: "https://api.github.com/users/octocat/received_events",
-    repos_url: "https://api.github.com/users/octocat/repos",
-    site_admin: false,
-    starred_url: "https://api.github.com/users/octocat/starred{/owner}{/repo}",
-    subscriptions_url: "https://api.github.com/users/octocat/subscriptions",
-    twitter_username: null,
-    type: "User",
-    updated_at: "2023-09-22T11:25:21Z",
-    url: "https://api.github.com/users/octocat",
-  });
+  const [userData, setUserData] = useState<DATA | null>(null);
   const [errMessage, setErrMessage] = useState<null | string>(null);
-  const getUser = async () => {
+
+  const getUser = async (name: string | null) => {
+    if (name === null) {
+      return;
+    }
     try {
-      const user = await axios.get(`https://api.github.com/users/${userName}`);
+      const user = await axios.get(`https://api.github.com/users/${name}`);
       setUserData(user.data);
       setErrMessage(null);
     } catch (err) {
-      err ? setErrMessage("No results") : null;
+      setErrMessage(err ? "No results" : null);
     }
   };
 
@@ -69,16 +78,21 @@ function App() {
           devfinder
         </h2>
         <div
-          className="flex items-center gap-[1.6rem] cursor-pointer"
+          className={`flex items-center gap-[1.6rem] cursor-pointer light-dark-mode`}
           onClick={() => setLight(!light)}
         >
           <span
-            className="uppercase font-bold"
-            style={light ? { color: "#697C9A" } : { color: "white" }}
+            className={`uppercase font-bold ${
+              light ? "text-[#697C9A] light" : "text-white dark"
+            }`}
           >
             light
           </span>
-          <img src={light ? moon : sun} alt="" />
+          <img
+            src={light ? moon : sun}
+            alt=""
+            className={`${light ? "light-img" : "dark-img"}`}
+          />
         </div>
       </header>
 
@@ -107,12 +121,12 @@ function App() {
         <img
           src={search}
           alt=""
-          onClick={getUser}
+          onClick={() => getUser(userName)}
           className="absolute left-[3.2rem] top-[2.3rem] max-md:left-[1.6rem] max-md:top-[2rem] cursor-pointer"
         />
         <button
           className="pt-[1.25rem] pb-[1.35rem] px-[2.5rem] bg-[#0079FF] rounded-[1rem] text-[1.6rem] font-bold absolute top-[.95rem] right-[1rem] max-md:px-[1.6rem] max-md:py-[1.25rem] max-md:top-[.65rem] max-md:text-[1.4rem] active:bg-[#60ABFF] hover:bg-[#9dcbffab] duration-150"
-          onClick={getUser}
+          onClick={() => getUser(userName)}
         >
           Search
         </button>
@@ -134,14 +148,14 @@ function App() {
       >
         <div className="flex gap-[3.7rem]">
           <img
-            src={userData.avatar_url}
+            src={userData?.avatar_url}
             alt=""
             className="w-[11.7rem] h-[11.7rem] max-lg:hidden rounded-[50%]"
           />
           <div className="w-full">
             <div className="flex max-lg:gap-[4.1rem] max-md:gap-[1.95rem]">
               <img
-                src={userData.avatar_url}
+                src={userData?.avatar_url}
                 alt=""
                 className="w-[11.7rem] h-[11.7rem] lg:hidden max-md:w-[7rem] max-md:h-[7rem] rounded-[50%]"
               />
@@ -151,25 +165,52 @@ function App() {
                     className="font-bold text-[2.6rem] max-md:text-[1.6rem]"
                     style={light ? { color: "#2B3442" } : { color: "white" }}
                   >
-                    {userData.name}
+                    {userData?.name}
                   </h1>
                   <p className="text-[1.6rem] text-[#0079FF] max-md:text-[1.3rem]">
-                    @{userData.login}
+                    @{userData?.login}
                   </p>
                 </div>
-                <p
+                <div
                   className="text-[1.5rem] leading-[3.5rem] max-md:text-[1.3rem]"
                   style={light ? { color: "#697C9A" } : { color: "white" }}
                 >
-                  Joined 25 Jan 2011
-                </p>
+                  <span>
+                    Joined {userData?.created_at.slice(8, 10)}{" "}
+                    {userData?.created_at.slice(5, 7) === "01"
+                      ? "Jan"
+                      : userData?.created_at.slice(5, 7) === "02"
+                      ? "Feb"
+                      : userData?.created_at.slice(5, 7) === "03"
+                      ? "Mar"
+                      : userData?.created_at.slice(5, 7) === "04"
+                      ? "Apr"
+                      : userData?.created_at.slice(5, 7) === "05"
+                      ? "May"
+                      : userData?.created_at.slice(5, 7) === "06"
+                      ? "Jun"
+                      : userData?.created_at.slice(5, 7) === "07"
+                      ? "Jul"
+                      : userData?.created_at.slice(5, 7) === "08"
+                      ? "Aug"
+                      : userData?.created_at.slice(5, 7) === "09"
+                      ? "Sep"
+                      : userData?.created_at.slice(5, 7) === "10"
+                      ? "Oct"
+                      : userData?.created_at.slice(5, 7) === "11"
+                      ? "Nov"
+                      : userData?.created_at.slice(5, 7) === "12"
+                      ? "Dec"
+                      : ""}
+                  </span>
+                </div>
               </div>
             </div>
             <p
               className="text-[1.5rem] leading-[2.5rem] mt-[2rem] max-md:text-[1.3rem]"
               style={light ? { color: "#4B6A9B" } : { color: "white" }}
             >
-              {userData.bio}
+              {userData?.bio}
             </p>
             <div
               className="rounded-[1rem] mt-[3.2rem] pl-[3.2rem] pt-[1.5rem] pb-[1.7rem] pr-[8.3rem] flex justify-between max-md:pt-[1.8rem] max-md:pr-[1.4rem] max-md:pb-[1.9rem] max-md:pl-[1.5rem] max-md:mt-[2.3rem] duration-300 ease"
@@ -188,7 +229,7 @@ function App() {
                   className="text-[2.2rem] font-bold max-md:text-[1.6rem]"
                   style={light ? { color: "#2B3442" } : { color: "white" }}
                 >
-                  {userData.public_repos}
+                  {userData?.public_repos}
                 </p>
               </div>
               <div>
@@ -202,7 +243,7 @@ function App() {
                   className="text-[2.2rem] font-bold  max-md:text-[1.6rem]"
                   style={light ? { color: "#2B3442" } : { color: "white" }}
                 >
-                  {userData.followers}
+                  {userData?.followers}
                 </p>
               </div>
               <div>
@@ -216,11 +257,11 @@ function App() {
                   className="text-[2.2rem] font-bold  max-md:text-[1.6rem]"
                   style={light ? { color: "#2B3442" } : { color: "white" }}
                 >
-                  {userData.following}
+                  {userData?.following}
                 </p>
               </div>
             </div>
-            <div className="flex justify-between pr-[5.1rem] mt-[3.7rem] max-md:mt-[2.4rem] max-md:flex-col max-md:gap-[1.6rem]">
+            <div className="flex justify-between pr-[5.1rem] mt-[3.7rem] max-md:mt-[2.4rem] max-md:flex-col max-md:gap-[1.6rem] items-center">
               <div>
                 <div className="flex gap-[1.9rem] items-center">
                   <img
@@ -229,10 +270,11 @@ function App() {
                     className="w-[2rem] max-md:w-[1.6rem] max-md:h-[1.6rem]"
                   />
                   <p
-                    className="text-[1.5rem] max-md:text-[1.3rem]"
-                    style={light ? { color: "#4B6A9B" } : { color: "white" }}
+                    className={`text-[1.5rem] max-md:text-[1.3rem] ${
+                      light ? "text-[#4B6A9B]" : "text-[white]"
+                    }`}
                   >
-                    {userData.location ? userData.location : "Not Available"}
+                    {userData?.location ? userData.location : "Not Available"}
                   </p>
                 </div>
                 <div className="flex mt-[1.9rem] gap-[1.9rem] max-md:mt-[1.6rem] items-center">
@@ -242,11 +284,11 @@ function App() {
                     className="w-[2rem] max-md:w-[1.6rem]  max-md:h-[1.6rem]"
                   />
                   <a
-                    href={userData.blog}
+                    href={userData?.blog}
                     className="text-[1.5rem] max-md:text-[1.3rem] hover:underline"
                     style={light ? { color: "#4B6A9B" } : { color: "white" }}
                   >
-                    {userData.blog ? userData.blog : "Not Available"}
+                    {userData?.blog ? userData.blog : "Not Available"}
                   </a>
                 </div>
               </div>
@@ -261,7 +303,7 @@ function App() {
                     className="text-[1.5rem]  max-md:text-[1.3rem]"
                     style={light ? { color: "#4B6A9B" } : { color: "white" }}
                   >
-                    {userData.twitter_username
+                    {userData?.twitter_username
                       ? userData.twitter_username
                       : "Not Available"}
                   </p>
@@ -276,7 +318,7 @@ function App() {
                     className="text-[1.5rem]  max-md:text-[1.3rem]"
                     style={light ? { color: "#4B6A9B" } : { color: "white" }}
                   >
-                    {userData.company ? userData.company : "Not Available"}
+                    {userData?.company ? userData.company : "Not Available"}
                   </p>
                 </div>
               </div>
