@@ -261,66 +261,63 @@ function App() {
                 </p>
               </div>
             </div>
-            <div className="flex justify-between pr-[5.1rem] mt-[3.7rem] max-md:mt-[2.4rem] max-md:flex-col max-md:gap-[1.6rem] items-center">
-              <div>
-                <div className="flex gap-[1.9rem] items-center">
-                  <img
-                    src={location}
-                    alt=""
-                    className="w-[2rem] max-md:w-[1.6rem] max-md:h-[1.6rem]"
-                  />
-                  <p
-                    className={`text-[1.5rem] max-md:text-[1.3rem] ${
-                      light ? "text-[#4B6A9B]" : "text-[white]"
-                    }`}
-                  >
-                    {userData?.location ? userData.location : "Not Available"}
-                  </p>
-                </div>
-                <div className="flex mt-[1.9rem] gap-[1.9rem] max-md:mt-[1.6rem] items-center">
-                  <img
-                    src={website}
-                    alt=""
-                    className="w-[2rem] max-md:w-[1.6rem]  max-md:h-[1.6rem]"
-                  />
-                  <a
-                    href={userData?.blog}
-                    className="text-[1.5rem] max-md:text-[1.3rem] hover:underline"
-                    style={light ? { color: "#4B6A9B" } : { color: "white" }}
-                  >
-                    {userData?.blog ? userData.blog : "Not Available"}
-                  </a>
-                </div>
+            <div className="grid grid-cols-2 gap-y-[2.1rem] gap-x-[6.5rem] pr-[5.1rem] mt-[3.7rem] max-md:mt-[2.4rem] max-md:grid-cols-1 max-md:gap-x-[7rem]">
+              <div className="flex gap-[1.9rem] items-center">
+                <img
+                  src={location}
+                  alt=""
+                  className="w-[2rem] max-md:w-[1.6rem]"
+                />
+                <p
+                  className={`text-[1.5rem] max-md:text-[1.3rem] ${
+                    light ? "text-[#4B6A9B]" : "text-[white]"
+                  }`}
+                >
+                  {userData?.location ? userData.location : "Not Available"}
+                </p>
               </div>
-              <div>
-                <div className="flex gap-[1.9rem] items-center">
-                  <img
-                    src={twitter}
-                    alt=""
-                    className="w-[2rem] max-md:w-[1.6rem] max-md:h-[1.6rem]"
-                  />
-                  <p
-                    className="text-[1.5rem]  max-md:text-[1.3rem]"
-                    style={light ? { color: "#4B6A9B" } : { color: "white" }}
-                  >
-                    {userData?.twitter_username
-                      ? userData.twitter_username
-                      : "Not Available"}
-                  </p>
-                </div>
-                <div className="flex mt-[1.9rem] gap-[1.9rem]  max-md:mt-[1.6rem] items-center">
-                  <img
-                    src={company}
-                    alt=""
-                    className="w-[2rem] max-md:w-[1.6rem] max-md:h-[1.6rem]"
-                  />
-                  <p
-                    className="text-[1.5rem]  max-md:text-[1.3rem]"
-                    style={light ? { color: "#4B6A9B" } : { color: "white" }}
-                  >
-                    {userData?.company ? userData.company : "Not Available"}
-                  </p>
-                </div>
+              <div className="flex gap-[1.9rem] items-center">
+                <img
+                  src={twitter}
+                  alt=""
+                  className="w-[2rem] max-md:w-[1.6rem]"
+                />
+                <p
+                  className="text-[1.5rem]  max-md:text-[1.3rem]"
+                  style={light ? { color: "#4B6A9B" } : { color: "white" }}
+                >
+                  {userData?.twitter_username
+                    ? userData.twitter_username
+                    : "Not Available"}
+                </p>
+              </div>
+              <div className="flex gap-[1.9rem] items-center">
+                <img
+                  src={website}
+                  alt=""
+                  className="w-[2rem] max-md:w-[1.6rem]"
+                />
+                <a
+                  href={userData?.blog}
+                  className="text-[1.5rem] max-md:text-[1.3rem] hover:underline"
+                  style={light ? { color: "#4B6A9B" } : { color: "white" }}
+                >
+                  {userData?.blog ? userData.blog : "Not Available"}
+                </a>
+              </div>
+
+              <div className="flex gap-[1.9rem] items-center">
+                <img
+                  src={company}
+                  alt=""
+                  className="w-[2rem] max-md:w-[1.6rem]"
+                />
+                <p
+                  className="text-[1.5rem]  max-md:text-[1.3rem]"
+                  style={light ? { color: "#4B6A9B" } : { color: "white" }}
+                >
+                  {userData?.company ? userData.company : "Not Available"}
+                </p>
               </div>
             </div>
           </div>
